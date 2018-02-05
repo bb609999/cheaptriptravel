@@ -1,13 +1,20 @@
 package com.example.cheaptriptravel;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.example.cheaptriptravel.util.HttpUtil;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnCameraIdleListener;
+import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
+import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -16,11 +23,19 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements
+        OnMapClickListener, OnMapLongClickListener, OnCameraIdleListener,
+        OnMapReadyCallback {
 
     private String OUHK = "22.316279,%20114.180408";
 
     private String APM = "22.312441,%20114.225046";
+
+    private TextView mTapTextView;
+    private TextView mCameraTextView;
+    private GoogleMap mMap;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,9 +44,39 @@ public class MainActivity extends AppCompatActivity {
 
         calculateDuration(OUHK,APM);
 
+        mTapTextView = (TextView) findViewById(R.id.tap_text);
+        mCameraTextView = (TextView) findViewById(R.id.camera_text);
 
+        SupportMapFragment mapFragment =
+                (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
 
     }
+
+    @Override
+    public void onMapReady(GoogleMap map) {
+        mMap = map;
+        mMap.setOnMapClickListener(this);
+        mMap.setOnMapLongClickListener(this);
+        mMap.setOnCameraIdleListener(this);
+    }
+
+    @Override
+    public void onMapClick(LatLng point) {
+        mTapTextView.setText("tapped, point=" + point);
+    }
+
+    @Override
+    public void onMapLongClick(LatLng point) {
+        mTapTextView.setText("long pressed, point=" + point);
+    }
+
+    @Override
+    public void onCameraIdle() {
+        mCameraTextView.setText(mMap.getCameraPosition().toString());
+    }
+
+
 
 
     private void calculateDuration(String startPoint, String endPoint) {
