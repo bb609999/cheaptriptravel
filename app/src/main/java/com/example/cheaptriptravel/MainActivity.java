@@ -128,6 +128,52 @@ public class MainActivity extends AppCompatActivity implements
 
 
 
+    private List<String> shortestPath(String[] endpoint){
+        ArrayList<String> SiteVisit = new ArrayList<String>();
+
+        for(int i =0; i< endpoint.length;i++) {
+            SiteVisit.add(endpoint[i]);
+        }
+        ArrayList<String> CountList = new ArrayList<String>();//store temp path
+        CountList.add(endpoint[0]);
+
+        List<String> Temp0List = new ArrayList<>();
+        List<String> Count0List = new ArrayList<>();
+        List<String> Answer = new ArrayList<>();
+        int p ;
+        int shortestpathduration = 0;
+        int Temppathduration = 0;//store temp path's duration
+
+        for(int i=1;i<SiteVisit.size();i++){
+            Count0List = CountList;//reset countlist
+            Temp0List = SiteVisit;//templist
+            Temppathduration+=list[0][i];
+            Count0List.add(SiteVisit.get(i));
+
+            for (int j=i+1;j<Temp0List.size();j++){
+                if(i==j){
+                    j++;
+                }
+                Temppathduration+=list[i][j];
+                Count0List.add(Temp0List.get(j));
+                for (int k=j+1;k<Temp1List.size();k++){
+                    if(j==k){
+                        k++;
+                    }
+                    Temppathduration+=list[j][k];
+                    Count0List.add(Temp1List.get(k));
+                    Temppathduration+=list[0][k];
+                    Count0List.add(Temp0List.get(0));
+                    if(shortestpathduration == 0||Temppathduration<shortestpathduration){//store the shortest path
+                        shortestpathduration=Temppathduration;
+                        Answer=Count0List;
+                    }
+                }
+            }
+        }
+        return Answer;
+
+    }
 
     private List<Integer> calculateDuration(String startPoint, String[] endPoint) {
 
