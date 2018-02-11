@@ -20,7 +20,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -44,9 +43,6 @@ public class MainActivity extends AppCompatActivity implements
     private String MEGA = "22.320165,%20114.208168";
 
     private  List<Integer> list = new ArrayList<Integer>();
-
-
-
 
 
     private TextView mTapTextView;
@@ -80,9 +76,8 @@ public class MainActivity extends AppCompatActivity implements
                     public void run() {
                         //List<String> list = shortestPath(OUHK,APM,PLAZA,GYIN,MEGA);
                         //Log.d("List",list.toString());
-                        calculateDuration(OUHK,new String[]{APM,PLAZA,GYIN,MEGA});
-                        calculateDuration(OUHK,new String[]{APM,PLAZA,GYIN,MEGA});
-                        Log.d("result", result +"");
+                        calculateDuration(new String[]{OUHK,APM,PLAZA,GYIN,MEGA});
+                        calculateDuration(new String[]{OUHK,APM,PLAZA,GYIN,MEGA});
 
                     }
                 }).start();
@@ -128,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements
 
 
 
-    private List<String> shortestPath(String[] endpoint){
+   /* private List<String> shortestPath(String[] endpoint){
         ArrayList<String> SiteVisit = new ArrayList<String>();
 
         for(int i =0; i< endpoint.length;i++) {
@@ -173,15 +168,20 @@ public class MainActivity extends AppCompatActivity implements
         }
         return Answer;
 
-    }
+    } */
 
-    private List<Integer> calculateDuration(String startPoint, String[] endPoint) {
+    private int[][] calculateDuration(String[] endPoint) {
 
-        list.clear();
+        final int[][] durationValues = new int[endPoint.length][endPoint.length];
 
         String address = "https://maps.googleapis.com/maps/api/distancematrix/json" +
-                "?origins=" + startPoint +
-                "&destinations=";
+                "?origins=";
+
+        for(int i=0;i<endPoint.length;i++) {
+            address += endPoint[i]+"%7C";
+        }
+
+        address += "&destinations=";
 
 
         for(int i=0;i<endPoint.length;i++) {
@@ -211,38 +211,16 @@ public class MainActivity extends AppCompatActivity implements
 
                             JSONArray rows = jsonObject.getJSONArray("rows");
 
-                            JSONObject elements = new JSONObject();
-
-
-                            for (int i = 0; i < rows.length(); i++) {
-                                elements = rows.getJSONObject(i);
+                            for (int i = 0; i < rows.length(); i++){
+                                for (int j = 0; j < rows.length(); j++){
+                                    durationValues[i][j] = rows.getJSONObject(i).getJSONArray("elements")
+                                            .getJSONObject(j).getJSONObject("duration").getInt("value");
+                                }
                             }
 
-                            JSONArray elementArray = elements.getJSONArray("elements");
-
-
-                            JSONObject elementObj = elementArray.getJSONObject(0);
-
-                            int[] answer = new int[elementArray.length()];
-
-
-                            for(int i = 0 ;i<elementArray.length();i++){
-                                list.add(elementArray.getJSONObject(i).getJSONObject("duration").getInt("value"));
+                            for(int i = 0 ;i<rows.length();i++) {
+                                Log.d("DurationValues : ", Arrays.toString(durationValues[i]));
                             }
-
-                            JSONObject durationObj = elementObj.getJSONObject("duration");
-
-                            int duration_value = durationObj.getInt("value");
-
-                            Log.d("API RETURN", destination_addresses + "\n" + origin_addresses + "\n" + rows.toString() + "\n" + elements);
-                            Log.d("API to element Array", elementArray.toString());
-                            Log.d("TEST", elementObj.toString());
-                            Log.d("TEST", duration_value+"");
-
-                             result =  duration_value;
-
-                            Log.d("TEST return:",""+ list.toString());
-
 
                             returnOrNot = true;
 
@@ -259,7 +237,7 @@ public class MainActivity extends AppCompatActivity implements
         }
         returnOrNot = false;
 
-        return list;
+        return durationValues;
 
 
 
