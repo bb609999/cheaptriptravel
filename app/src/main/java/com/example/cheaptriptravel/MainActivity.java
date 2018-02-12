@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.cheaptriptravel.util.HttpUtil;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnCameraIdleListener;
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
@@ -15,6 +16,7 @@ import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -33,16 +35,21 @@ public class MainActivity extends AppCompatActivity implements
         OnMapReadyCallback {
 
     private String OUHK = "22.316279,%20114.180408";
-
     private String APM = "22.312441,%20114.225046";
-
     private String PLAZA = "22.310602,%20114.187868";
-
     private String GYIN = "22.308235,%20114.185765";
-
     private String MEGA = "22.320165,%20114.208168";
 
-    private  List<Integer> list = new ArrayList<Integer>();
+    private LatLng P1_OUHK = new LatLng(22.316279,114.180408);
+    private LatLng P2_APM = new LatLng(22.312441,114.225046);
+    private LatLng P3_PLAZA = new LatLng(22.310602,114.187868);
+    private LatLng P4_GYIN = new LatLng(22.308235,114.185765);
+    private LatLng P5_MEGA = new LatLng(22.320165,114.208168);
+
+
+
+
+    private LatLng[] POIS = {P1_OUHK,P2_APM,P3_PLAZA,P4_GYIN,P5_MEGA};
 
 
     private TextView mTapTextView;
@@ -78,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements
                         //Log.d("List",list.toString());
                         calculateDuration(new String[]{OUHK,APM,PLAZA,GYIN,MEGA});
                         calculateDuration(new String[]{OUHK,APM,PLAZA,GYIN,MEGA});
+                        Log.d("Hello",shortestPath(new String[]{OUHK,APM,PLAZA,GYIN,MEGA}).toString());
 
                     }
                 }).start();
@@ -103,6 +111,12 @@ public class MainActivity extends AppCompatActivity implements
         mMap.setOnMapClickListener(this);
         mMap.setOnMapLongClickListener(this);
         mMap.setOnCameraIdleListener(this);
+
+        mMap.addPolyline(new PolylineOptions()
+        .add(POIS));
+
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(P1_OUHK, 13));
+
     }
 
     @Override
@@ -123,8 +137,10 @@ public class MainActivity extends AppCompatActivity implements
 
 
 
-   /* private List<String> shortestPath(String[] endpoint){
+    private List<String> shortestPath(String[] endpoint){
         ArrayList<String> SiteVisit = new ArrayList<String>();
+
+        int[][] list = calculateDuration(endpoint);
 
         for(int i =0; i< endpoint.length;i++) {
             SiteVisit.add(endpoint[i]);
@@ -151,12 +167,12 @@ public class MainActivity extends AppCompatActivity implements
                 }
                 Temppathduration+=list[i][j];
                 Count0List.add(Temp0List.get(j));
-                for (int k=j+1;k<Temp1List.size();k++){
+                for (int k=j+1;k<Temp0List.size();k++){
                     if(j==k){
                         k++;
                     }
                     Temppathduration+=list[j][k];
-                    Count0List.add(Temp1List.get(k));
+                    Count0List.add(Temp0List.get(k));
                     Temppathduration+=list[0][k];
                     Count0List.add(Temp0List.get(0));
                     if(shortestpathduration == 0||Temppathduration<shortestpathduration){//store the shortest path
@@ -168,7 +184,7 @@ public class MainActivity extends AppCompatActivity implements
         }
         return Answer;
 
-    } */
+    }
 
     private int[][] calculateDuration(String[] endPoint) {
 
