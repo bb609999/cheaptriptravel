@@ -22,7 +22,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -83,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements
                         //Log.d("List",list.toString());
                         calculateDuration(new String[]{OUHK,APM,PLAZA,GYIN,MEGA});
                         calculateDuration(new String[]{OUHK,APM,PLAZA,GYIN,MEGA});
+                        Log.d("Hello",shortestPath(new String[]{OUHK,APM,PLAZA,GYIN,MEGA}).toString());
 
                     }
                 }).start();
@@ -134,8 +137,10 @@ public class MainActivity extends AppCompatActivity implements
 
 
 
-   /* private List<String> shortestPath(String[] endpoint){
+    private List<String> shortestPath(String[] endpoint){
         ArrayList<String> SiteVisit = new ArrayList<String>();
+
+        int[][] list = calculateDuration(endpoint);
 
         for(int i =0; i< endpoint.length;i++) {
             SiteVisit.add(endpoint[i]);
@@ -162,12 +167,12 @@ public class MainActivity extends AppCompatActivity implements
                 }
                 Temppathduration+=list[i][j];
                 Count0List.add(Temp0List.get(j));
-                for (int k=j+1;k<Temp1List.size();k++){
+                for (int k=j+1;k<Temp0List.size();k++){
                     if(j==k){
                         k++;
                     }
                     Temppathduration+=list[j][k];
-                    Count0List.add(Temp1List.get(k));
+                    Count0List.add(Temp0List.get(k));
                     Temppathduration+=list[0][k];
                     Count0List.add(Temp0List.get(0));
                     if(shortestpathduration == 0||Temppathduration<shortestpathduration){//store the shortest path
@@ -179,7 +184,7 @@ public class MainActivity extends AppCompatActivity implements
         }
         return Answer;
 
-    } */
+    }
 
     private int[][] calculateDuration(String[] endPoint) {
 
