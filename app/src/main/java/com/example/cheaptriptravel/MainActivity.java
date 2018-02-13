@@ -22,9 +22,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -62,7 +60,6 @@ public class MainActivity extends AppCompatActivity implements
     private Button calculate_btn;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements
                         //Log.d("List",list.toString());
                         calculateDuration(new String[]{OUHK,APM,PLAZA,GYIN,MEGA});
                         calculateDuration(new String[]{OUHK,APM,PLAZA,GYIN,MEGA});
-                        Log.d("Hello",shortestPath(new String[]{OUHK,APM,PLAZA,GYIN,MEGA}).toString());
+                        Log.d("The Shortest Path:",shortestPath(new String[]{OUHK,APM,PLAZA,GYIN,MEGA}).toString());
 
                     }
                 }).start();
@@ -135,56 +132,82 @@ public class MainActivity extends AppCompatActivity implements
     }
 
 
+    private String[] shortestPath(String[] markerPosition) {
 
+        int shortestDuration = 0;
+        String shortest_path[] = new String[markerPosition.length];
 
-    private List<String> shortestPath(String[] endpoint){
-        ArrayList<String> SiteVisit = new ArrayList<String>();
+        int[][] list = calculateDuration(markerPosition);
 
-        int[][] list = calculateDuration(endpoint);
+        String[] listforChecked = new String[markerPosition.length];
 
-        for(int i =0; i< endpoint.length;i++) {
-            SiteVisit.add(endpoint[i]);
+        for(int i=0;i<markerPosition.length;i++){
+            listforChecked[i] = markerPosition[i];
         }
-        ArrayList<String> CountList = new ArrayList<String>();//store temp path
-        CountList.add(endpoint[0]);
 
-        List<String> Temp0List = new ArrayList<>();
-        List<String> Count0List = new ArrayList<>();
-        List<String> Answer = new ArrayList<>();
-        int p ;
-        int shortestpathduration = 0;
-        int Temppathduration = 0;//store temp path's duration
+        permute(markerPosition, 0, markerPosition.length-1,list,listforChecked);
 
-        for(int i=1;i<SiteVisit.size();i++){
-            Count0List = CountList;//reset countlist
-            Temp0List = SiteVisit;//templist
-            Temppathduration+=list[0][i];
-            Count0List.add(SiteVisit.get(i));
+        return shortest_path;
+    }
 
-            for (int j=i+1;j<Temp0List.size();j++){
-                if(i==j){
-                    j++;
-                }
-                Temppathduration+=list[i][j];
-                Count0List.add(Temp0List.get(j));
-                for (int k=j+1;k<Temp0List.size();k++){
-                    if(j==k){
-                        k++;
-                    }
-                    Temppathduration+=list[j][k];
-                    Count0List.add(Temp0List.get(k));
-                    Temppathduration+=list[0][k];
-                    Count0List.add(Temp0List.get(0));
-                    if(shortestpathduration == 0||Temppathduration<shortestpathduration){//store the shortest path
-                        shortestpathduration=Temppathduration;
-                        Answer=Count0List;
+
+
+    private void permute(String[] str, int l, int r , int[][]list , String[] usedtoCheckPosition)
+    {
+        int totalDuration = 0;
+
+
+        if (l == r) {
+           Log.d("Now PATH", Arrays.toString(str));
+           // Log.d("ORIGIN PATH", Arrays.toString(usedtoCheckPosition));
+
+            int[] x = new int[str.length];
+
+            //Checked [C,D,E,A,B] by [A,B,C,D,E] -> 2,3,4,0,1
+            for(int i=0;i<str.length;i++){
+                for(int j=0;j<str.length;j++) {
+                    if (str[i] == usedtoCheckPosition[j]) {
+                        x[i] = j;
                     }
                 }
             }
-        }
-        return Answer;
 
+
+            // calculate total duration in one route
+            for(int i=0;i<str.length;i++){
+                if(i+1>=str.length){
+                    totalDuration += 0;
+                }else
+                    totalDuration += list[x[i]][x[i+1]];
+
+                Log.d("totalDuration", ""+list[x[i]][x[i+1]]);
+            }
+
+
+        }
+        else
+        {
+            for (int i = l; i <= r; i++)
+            {
+                str = swap(str,l,i);
+                permute(str, l+1, r ,list,usedtoCheckPosition);
+                str = swap(str,l,i);
+            }
+        }
     }
+
+    public String[] swap(String[] a, int i, int j)
+    {
+        String temp;
+        //char[] charArray = a.toCharArray();
+        temp = a[i] ;
+        a[i] = a[j];
+        a[j] = temp;
+        return a;
+    }
+
+
+
 
     private int[][] calculateDuration(String[] endPoint) {
 
