@@ -22,7 +22,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -60,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements
     private Button calculate_btn;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,9 +83,10 @@ public class MainActivity extends AppCompatActivity implements
                     public void run() {
                         //List<String> list = shortestPath(OUHK,APM,PLAZA,GYIN,MEGA);
                         //Log.d("List",list.toString());
-                        calculateDuration(new String[]{OUHK,APM,PLAZA,GYIN,MEGA});
-                        calculateDuration(new String[]{OUHK,APM,PLAZA,GYIN,MEGA});
-                        Log.d("The Shortest Path:",shortestPath(new String[]{OUHK,APM,PLAZA,GYIN,MEGA}).toString());
+                       // calculateDuration(new String[]{OUHK,APM,PLAZA,GYIN,MEGA});
+                      calculateDuration(new String[]{OUHK,APM,PLAZA,GYIN,MEGA});
+                      Log.d("The Shortest Path:",Arrays.toString(shortestPath(new String[]{OUHK,APM,PLAZA,GYIN,MEGA})));
+                       // calculateRoute(new String[]{OUHK,APM,PLAZA,GYIN,MEGA});
 
                     }
                 }).start();
@@ -132,57 +136,89 @@ public class MainActivity extends AppCompatActivity implements
     }
 
 
-    private String[] shortestPath(String[] markerPosition) {
+    /*private String calculateRoute(String[] endPoint) {
 
-        int shortestDuration = 0;
-        String shortest_path[] = new String[markerPosition.length];
+        String html = "";
 
-        int[][] list = calculateDuration(markerPosition);
+        String address = "http://gebweb.net/optimap/index.php?";
 
-        String[] listforChecked = new String[markerPosition.length];
-
-        for(int i=0;i<markerPosition.length;i++){
-            listforChecked[i] = markerPosition[i];
+        for (int i = 0; i < endPoint.length; i++) {
+            address += "loc" + String.valueOf(i) + "=" + endPoint[i] + "&";
         }
 
-        permute(markerPosition, 0, markerPosition.length-1,list,listforChecked);
+        Intent intent = new Intent(MainActivity.this, RouteWebViewActivity.class);
+        intent.putExtra("address", address);
+        startActivity(intent);
 
-        return shortest_path;
+        return html;
     }
+    */
 
 
 
-    private void permute(String[] str, int l, int r , int[][]list , String[] usedtoCheckPosition)
-    {
-        int totalDuration = 0;
+
+    private String[] shortestPath(String[] markerPosition) {
+
+        int[][] list = calculateDuration(markerPosition);
+        List<String> pathList = new ArrayList<>();
+        int shortest_path = 0;
+        String[] finalmarkers = new String[markerPosition.length];
+
+        String str = "";
+        int n = markerPosition.length;
+        for(int i =0 ; i<markerPosition.length;i++){
+            str += String.valueOf(i);
+        }
 
 
-        if (l == r) {
-           Log.d("Now PATH", Arrays.toString(str));
-           // Log.d("ORIGIN PATH", Arrays.toString(usedtoCheckPosition));
+       permute(str, 0, n-1, pathList);
 
-            int[] x = new int[str.length];
+        //Log.d("Com2 :",""+pathList.size());
 
-            //Checked [C,D,E,A,B] by [A,B,C,D,E] -> 2,3,4,0,1
-            for(int i=0;i<str.length;i++){
-                for(int j=0;j<str.length;j++) {
-                    if (str[i] == usedtoCheckPosition[j]) {
-                        x[i] = j;
-                    }
+        int Totalduration = 0;
+        String shortestTemp = "";
+
+        for(int i =0 ; i<pathList.size();i++){
+            for(int j =0 ; j<markerPosition.length;j++){
+                if(j+1>=markerPosition.length){
+                    Totalduration += 0;
+                }else {
+                       // Log.d("Temp Path", pathList.get(i));
+                        Totalduration += list[Integer.parseInt(pathList.get(i).substring(j, j + 1))][Integer.parseInt(pathList.get(i).substring(j + 1, j + 2))];
+                        //Log.d("Temp duration",String.valueOf(Totalduration));
+
+
                 }
             }
+            if(shortest_path==0||shortest_path>Totalduration){
 
-
-            // calculate total duration in one route
-            for(int i=0;i<str.length;i++){
-                if(i+1>=str.length){
-                    totalDuration += 0;
-                }else
-                    totalDuration += list[x[i]][x[i+1]];
-
-                Log.d("totalDuration", ""+list[x[i]][x[i+1]]);
+                shortest_path = Totalduration;
+                shortestTemp = pathList.get(i);
+                //Log.d("Shortest Path", pathList.get(i));
+                //Log.d("Shortest duration",String.valueOf(Totalduration));
             }
+            Totalduration = 0;
 
+        }
+        Log.d("Shortest Path", ""+shortest_path);
+        Log.d("Shortest Path", ""+shortestTemp);
+
+        for(int i =0;i<markerPosition.length;i++){
+            int temp = Integer.parseInt(shortestTemp.substring(i,i+1));
+            finalmarkers[i]=markerPosition[temp];
+        }
+
+        return  finalmarkers;
+    }
+
+    private void permute(String str, int l, int r ,List<String> pathList)
+    {
+        if (l == r) {
+           // Log.d("Combination :",str);
+
+            for(int i =0 ; i<str.length();i++){
+                pathList.add(str);
+            }
 
         }
         else
@@ -190,21 +226,22 @@ public class MainActivity extends AppCompatActivity implements
             for (int i = l; i <= r; i++)
             {
                 str = swap(str,l,i);
-                permute(str, l+1, r ,list,usedtoCheckPosition);
+                permute(str, l+1, r,pathList);
                 str = swap(str,l,i);
             }
         }
     }
 
-    public String[] swap(String[] a, int i, int j)
+    public String swap(String a, int i, int j)
     {
-        String temp;
-        //char[] charArray = a.toCharArray();
-        temp = a[i] ;
-        a[i] = a[j];
-        a[j] = temp;
-        return a;
+        char temp;
+        char[] charArray = a.toCharArray();
+        temp = charArray[i] ;
+        charArray[i] = charArray[j];
+        charArray[j] = temp;
+        return String.valueOf(charArray);
     }
+
 
 
 
@@ -228,18 +265,14 @@ public class MainActivity extends AppCompatActivity implements
         }
 
         address += "&mode=transit" +
-                "&key=AIzaSyBGAlVrnlB0BqZxoc7K-PBo3qdwloXTa58";
+                "&key=AIzaSyC-uFuq2rGcGB34hLLeHtZBPF92B5UtCOI";
 
 
         HttpUtil.sendOkHttpRequest(address,
                 new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
-
                     }
-
-
-
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
                         String responseData = response.body().string();
@@ -277,12 +310,6 @@ public class MainActivity extends AppCompatActivity implements
         returnOrNot = false;
 
         return durationValues;
-
-
-
     }
-
-
-
 
 }
