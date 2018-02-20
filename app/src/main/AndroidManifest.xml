@@ -43,7 +43,17 @@
                 android:resource="@xml/searchable" />
         </activity>
         <activity android:name=".LoginActivity" />
-        <activity android:name=".util.RouteWebViewActivity"></activity>
+        <activity android:name=".util.RouteWebViewActivity" />
+        <activity android:name=".SearchableActivityActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+        <activity android:name=".ToolbarSearchActivity"></activity>
     </application>
 
 </manifest>
