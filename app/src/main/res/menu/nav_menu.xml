@@ -1,25 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <group android:checkableBehavior="single">
+    <group >
         <item
             android:id="@+id/your_schedule"
             android:title="Your Schedule"
+            android:checkable="true"
+
             />
         <item
             android:id="@+id/schedule_collection"
             android:title="Schedule Collection"
+            android:checkable="true"
+
             />
         <item
             android:id="@+id/footprint"
             android:title="Foot print"
+            android:checkable="true"
+
             />
         <item
             android:id="@+id/acc_setting"
             android:title="Account Setting"
+            android:checkable="true"
+
             />
         <item
             android:id="@+id/logout"
             android:title="Logout"
+            android:checkable="true"
+
             />
     </group>
 </menu>

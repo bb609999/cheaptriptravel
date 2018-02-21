@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:orientation="horizontal"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="@layout/home_page">
+    >
+
+    <TextView
+        android:id="@+id/tv01"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="Recommend"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/tv02"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="Current"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/tv03"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="Create"
+        android:textSize="18sp" />
+</LinearLayout>

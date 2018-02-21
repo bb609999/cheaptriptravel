@@ -1,39 +1,30 @@
 package com.example.cheaptriptravel;
 
 import android.content.Intent;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.Matrix;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.DisplayMetrics;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by waiwai on 11/2/2018.
  */
-
-public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
+//implements View.OnClickListener
+public class HomeActivity extends AppCompatActivity  {
 
     private List<View> listViews;
     private ImageView cursorIv;
@@ -57,6 +48,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     private DrawerLayout mDrawerLayout;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,10 +70,16 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 return true;
             }
         });
+        Button button = (Button)findViewById(R.id.test);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeActivity.this, OptimizedTripActivity.class);
+                startActivity(intent);            }
+        });
 
-        initUI();
-        initImageView();
-        initVPager();
+        //initUI();
+        //initVPager();
 
 
     }
@@ -118,7 +116,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         return true;
 
     }
-
+/*
     private void initUI() {
         viewPager = (ViewPager) findViewById(R.id.vPager);
         cursorIv = (ImageView) findViewById(R.id.iv_tab_bottom_img);
@@ -126,30 +124,21 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         tab02 = (TextView) findViewById(R.id.tv02);
         tab03 = (TextView) findViewById(R.id.tv03);
 
+
         tab01.setOnClickListener(this);
         tab02.setOnClickListener(this);
         tab03.setOnClickListener(this);
     }
 
-    private void initImageView() {
-        lineWidth = BitmapFactory.decodeResource(getResources(), R.drawable.red_line).getWidth();
-        // Android提供的DisplayMetrics可以很方便的获取屏幕分辨率
-        DisplayMetrics dm = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(dm);
-        int screenW = dm.widthPixels; // 获取分辨率宽度
-        offset = (screenW / TAB_COUNT - lineWidth) / 2;  // 计算偏移值
-        Matrix matrix = new Matrix();
-        matrix.postTranslate(offset, 0);
-        // 设置下划线初始位置
-        cursorIv.setImageMatrix(matrix);
-    }
+
 
     private void initVPager() {
         listViews = new ArrayList<>();
         LayoutInflater mInflater = getLayoutInflater();
         listViews.add(mInflater.inflate(R.layout.recom_layout, null));
-        listViews.add(mInflater.inflate(R.layout.current_layout, null));
+        listViews.add(mInflater.inflate(R.layout.optimize_trip_layout, null));
         listViews.add(mInflater.inflate(R.layout.create_layout, null));
+
         viewPager.setAdapter(new MyPagerAdapter(listViews));
         viewPager.setCurrentItem(0);
         titles = new TextView[]{tab01, tab02, tab03};
@@ -235,4 +224,5 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
     }
+*/
 }
