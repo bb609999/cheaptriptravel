@@ -34,11 +34,11 @@ public class MainActivity extends AppCompatActivity implements
         OnMapClickListener, OnMapLongClickListener, OnCameraIdleListener,
         OnMapReadyCallback {
 
-    private String OUHK = "22.316279,%20114.180408";
-    private String APM = "22.312441,%20114.225046";
-    private String PLAZA = "22.310602,%20114.187868";
-    private String GYIN = "22.308235,%20114.185765";
-    private String MEGA = "22.320165,%20114.208168";
+    private String OUHK = "22.316279,114.180408";
+    private String APM = "22.312441,114.225046";
+    private String PLAZA = "22.310602,114.187868";
+    private String GYIN = "22.308235,114.185765";
+    private String MEGA = "22.320165,114.208168";
 
     private LatLng P1_OUHK = new LatLng(22.316279,114.180408);
     private LatLng P2_APM = new LatLng(22.312441,114.225046);

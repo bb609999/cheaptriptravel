@@ -54,13 +54,14 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
-        <activity android:name=".ToolbarSearchActivity"></activity>
+        <activity android:name=".ToolbarSearchActivity" />
         <activity android:name=".OptimizedTripActivity">
             <intent-filter tools:ignore="AppLinkUrlError">
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
-                <data android:scheme="http"/>
+
+                <data android:scheme="http" />
             </intent-filter>
         </activity>
         <activity android:name=".TimelineActivity">
@@ -77,6 +78,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity android:name=".ShortestPathMap"></activity>
     </application>
 
 </manifest>

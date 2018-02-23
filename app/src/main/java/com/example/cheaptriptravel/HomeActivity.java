@@ -101,7 +101,7 @@ public class HomeActivity extends AppCompatActivity  {
                 break;
             case R.id.backup:
                 Toast.makeText(this, "You clicked Backup", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(HomeActivity.this, MainActivity.class);
+                Intent intent = new Intent(HomeActivity.this, ShortestPathMap.class);
                 startActivity(intent);
                 break;
             case R.id.delete:
