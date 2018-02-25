@@ -1,81 +1,152 @@
 package com.example.cheaptriptravel;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.widget.Toast;
 
+import com.example.cheaptriptravel.TimelineAdapter.OnItemPressedListener;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 /**
- * Created by waiwai on 21/2/2018.
+ * Created by waiwai on 25/2/2018.
  */
 
 public class TimelineActivity extends AppCompatActivity {
 
-    private RecyclerView Rv;
-    private ArrayList<HashMap<String,Object>> listItem;
-    private TimelineAdapter myAdapter;
+    private RecyclerView rvTrace;
+    private List<Timeline> timeList = new ArrayList<>(10);
+    private TimelineAdapter adapter;
+
+    String[] events = new String[]{
+            "去小北门拿快递",
+            "跟同事一起聚餐",
+            "写文档",
+            "和产品开会",
+            "整理开会内容",
+            "提交代码到git上",
+            "happy ending"
+    };
+
+    String[] times = new String[10];
+    SimpleDateFormat simpledateformat;
+    List<String> list = new ArrayList<String>();
+    String traveltoool = "bus";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.timeline_content_layout);
+        setContentView(R.layout.timeline_layout);
+
+        findView();
         initData();
-        initView();
     }
 
-    // 初始化显示的数据
-    public void initData(){
-        listItem = new ArrayList<HashMap<String, Object>>();/*在数组中存放数据*/
+    private void findView() {
 
-        HashMap<String, Object> map1 = new HashMap<String, Object>();
-        HashMap<String, Object> map2 = new HashMap<String, Object>();
-        HashMap<String, Object> map3 = new HashMap<String, Object>();
-        HashMap<String, Object> map4 = new HashMap<String, Object>();
-        HashMap<String, Object> map5 = new HashMap<String, Object>();
-        HashMap<String, Object> map6 = new HashMap<String, Object>();
+        rvTrace = (RecyclerView) findViewById(R.id.rvTrace);
 
-        map1.put("ItemTitle", "美国谷歌公司已发出");
-        map1.put("ItemText", "发件人:谷歌 CEO Sundar Pichai");
-        listItem.add(map1);
-
-        map2.put("ItemTitle", "国际顺丰已收入");
-        map2.put("ItemText", "等待中转");
-        listItem.add(map2);
-
-        map3.put("ItemTitle", "国际顺丰转件中");
-        map3.put("ItemText", "下一站中国");
-        listItem.add(map3);
-
-        map4.put("ItemTitle", "中国顺丰已收入");
-        map4.put("ItemText", "下一站广州华南理工大学");
-        listItem.add(map4);
-
-        map5.put("ItemTitle", "中国顺丰派件中");
-        map5.put("ItemText", "等待派件");
-        listItem.add(map5);
-
-        map6.put("ItemTitle", "华南理工大学已签收");
-        map6.put("ItemText", "收件人:Carson");
-        listItem.add(map6);
     }
 
-    // 绑定数据到RecyclerView
-    public void initView(){
-        Rv = (RecyclerView) findViewById(R.id.my_recycler_view);
-        //使用线性布局
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        Rv.setLayoutManager(layoutManager);
-        Rv.setHasFixedSize(true);
+    @TargetApi(Build.VERSION_CODES.N)
+    private void initData() {
+        Calendar cal = Calendar.getInstance();
+        simpledateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date dt=new Date();
+        String dts=simpledateformat.format(dt);
+        times[0]=dts;
+        for (int num=0; num<events.length; num++){
+            if (num==0){
+                times[num+1]=dts;
+            }if (num==events.length-1){
+                Date dt1 = null;
+                try {
+                    dt1 = simpledateformat.parse(times[num]);
+                    cal.setTime(dt1);
+                    cal.add(Calendar.HOUR, +1);
+                    Date tdt= cal.getTime();
+                    dts = simpledateformat.format(tdt);
+                    times[num] = dts;
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
 
-        //用自定义分割线类设置分割线
-        Rv.addItemDecoration(new TimelineDesign(this));
+            }
+            else{
+                try {
+                    Date dt1 = simpledateformat.parse(times[num]);
+                    cal.setTime(dt1);
+                    cal.add(Calendar.HOUR, +1);
+                    Date tdt= cal.getTime();
+                    dts = simpledateformat.format(tdt);
+                    times[num] = dts;
+                    times[num+1]=dts;
 
-        //为ListView绑定适配器
-        myAdapter = new TimelineAdapter(this,listItem);
-        Rv.setAdapter(myAdapter);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }
+        Log.d("input", Arrays.toString(times));
+        Log.d("input", Arrays.toString(events));
+        Log.d("input2", traveltoool);
+
+        String[] removedNull = Arrays.stream(times)
+                .filter(value ->
+                        value != null && value.length() > 0
+                )
+                .toArray(size -> new String[size]);
+
+        if (removedNull.length==events.length) {
+
+            for (int i = 0; i < removedNull.length; i++) {
+                timeList.add(new Timeline(removedNull[i], events[i], traveltoool));
+            }
+            Log.d("input1", Arrays.toString(times));
+
+            Log.d("input1", Arrays.toString(events));
+
+
+            adapter = new TimelineAdapter(this, timeList, traveltoool);
+            rvTrace.setLayoutManager(new LinearLayoutManager(this));
+            rvTrace.setAdapter(adapter);
+            adapter.setOnItemPressedListener(new OnItemPressedListener(){
+
+                @Override
+                public void onItemClick(int position) {
+                    Toast.makeText(TimelineActivity.this, "onItemClick", Toast.LENGTH_SHORT).show();
+                    //Intent intent = new Intent(TimelineActivity.this, DisplayActivity.class);
+                    //startActivity(intent);
+
+                }
+
+                @Override
+                public boolean OnItemLongClick(int position) {
+                    Toast.makeText(TimelineActivity.this, "OnItemLongClick", Toast.LENGTH_SHORT).show();
+
+                    return true;
+                }
+            });
+            rvTrace.setRecyclerListener(new RecyclerView.RecyclerListener() {
+                @Override
+                public void onViewRecycled(RecyclerView.ViewHolder holder) {
+                    TimelineAdapter.ViewHolder vh = (com.example.cheaptriptravel.TimelineAdapter.ViewHolder) holder;
+                }
+            });
+        }
     }
+
 
 }
