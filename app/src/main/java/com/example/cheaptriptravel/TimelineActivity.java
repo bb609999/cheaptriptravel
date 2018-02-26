@@ -40,6 +40,7 @@ public class TimelineActivity extends AppCompatActivity {
     };
 
     String[] times = new String[10];
+    List<String> times2 = new ArrayList<String>();
     SimpleDateFormat simpledateformat;
     List<String> list = new ArrayList<String>();
     String traveltoool = "bus";
@@ -103,16 +104,17 @@ public class TimelineActivity extends AppCompatActivity {
         Log.d("input", Arrays.toString(events));
         Log.d("input2", traveltoool);
 
-        String[] removedNull = Arrays.stream(times)
-                .filter(value ->
-                        value != null && value.length() > 0
-                )
-                .toArray(size -> new String[size]);
+        for(String s : times) {
+            if(s != null && s.length() > 0) {
+                times2.add(s);
+            }
+        }
+        times = times2.toArray(new String[times2.size()]);
 
-        if (removedNull.length==events.length) {
+        if (times.length==events.length) {
 
-            for (int i = 0; i < removedNull.length; i++) {
-                timeList.add(new Timeline(removedNull[i], events[i], traveltoool));
+            for (int i = 0; i < times.length; i++) {
+                timeList.add(new Timeline(times[i], events[i], traveltoool));
             }
             Log.d("input1", Arrays.toString(times));
 
