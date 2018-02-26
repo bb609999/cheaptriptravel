@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/litepalButton1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="data" />
+
+    <Button
+        android:id="@+id/litepalupdate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/litepalButton1"
+        android:padding="10dp"
+        android:text="update" />
+
+    <Button
+        android:id="@+id/litepaldelete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/litepalupdate"
+        android:padding="10dp"
+        android:text="delete" />
+
+    <Button
+        android:id="@+id/litepalfind"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/litepaldelete"
+        android:padding="10dp"
+        android:text="find" />
+</LinearLayout>
