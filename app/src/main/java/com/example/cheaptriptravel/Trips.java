@@ -2,8 +2,9 @@ package com.example.cheaptriptravel;
 
 import org.litepal.crud.DataSupport;
 
+import java.util.ArrayList;
 import java.util.Date;
-
+import java.util.List;
 /**
  * Created by waiwai on 26/2/2018.
  */

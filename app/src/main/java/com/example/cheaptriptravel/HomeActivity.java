@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -46,6 +47,9 @@ public class HomeActivity extends AppCompatActivity  {
 
     private static final int TAB_2 = 2;
 
+    private MenuItem mPreMenuItem;
+    private View content;
+
     private DrawerLayout mDrawerLayout;
 
 
@@ -57,6 +61,8 @@ public class HomeActivity extends AppCompatActivity  {
         setSupportActionBar(toolbar);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        content = findViewById(R.id.content);
+
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -66,7 +72,28 @@ public class HomeActivity extends AppCompatActivity  {
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                if (null != mPreMenuItem) {
+                    mPreMenuItem.setChecked(false);
+                }
+                switch (item.getItemId()) {
+                    case R.id.your_schedule:
+                        Snackbar.make(content, item.getTitle() + " pressed", Snackbar.LENGTH_LONG).show();
+                        break;
+                    case R.id.schedule_collection:
+                        break;
+                    case R.id.footprint:
+                        Intent intent4 = new Intent(HomeActivity.this,LocalDatabaseActivity.class);
+                        startActivity(intent4);
+                    case R.id.acc_setting:
+                        break;
+                    case R.id.logout:
+                        break;
+                    default:
+                        break;
+                }
+                item.setChecked(true);
                 mDrawerLayout.closeDrawers();
+                mPreMenuItem = item;
                 return true;
             }
         });
@@ -86,6 +113,7 @@ public class HomeActivity extends AppCompatActivity  {
 
 
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -114,6 +142,7 @@ public class HomeActivity extends AppCompatActivity  {
                 Intent intent3 = new Intent(HomeActivity.this,ToolbarSearchActivity.class);
                 startActivity(intent3);
                 break;
+
             default:
         }
         return true;
