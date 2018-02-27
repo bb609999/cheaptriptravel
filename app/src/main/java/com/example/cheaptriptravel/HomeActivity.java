@@ -103,7 +103,7 @@ public class HomeActivity extends AppCompatActivity  {
             public void onClick(View v) {
                 //Intent intent = new Intent(HomeActivity.this, OptimizedTripActivity.class);
                 //startActivity(intent);
-                Intent intent = new Intent(HomeActivity.this, TimelineActivity.class);
+                Intent intent = new Intent(HomeActivity.this, DumpActivity.class);
                 startActivity(intent);
             }
         });
