@@ -139,7 +139,7 @@ public class HomeActivity extends AppCompatActivity  {
                 break;
             case R.id.settings:
                 Toast.makeText(this, "You clicked Settings", Toast.LENGTH_SHORT).show();
-                Intent intent3 = new Intent(HomeActivity.this,ToolbarSearchActivity.class);
+                Intent intent3 = new Intent(HomeActivity.this,LocationSearch.class);
                 startActivity(intent3);
                 break;
 
