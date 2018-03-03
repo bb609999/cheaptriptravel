@@ -80,13 +80,18 @@ public class HomeActivity extends AppCompatActivity  {
                         Snackbar.make(content, item.getTitle() + " pressed", Snackbar.LENGTH_LONG).show();
                         break;
                     case R.id.schedule_collection:
+                        Intent intent3 = new Intent(HomeActivity.this,EditActivity.class);
+                        startActivity(intent3);
                         break;
                     case R.id.footprint:
                         Intent intent4 = new Intent(HomeActivity.this,LocalDatabaseActivity.class);
                         startActivity(intent4);
                     case R.id.acc_setting:
+                        Intent intent5 = new Intent(HomeActivity.this,InputActivity.class);
+                        startActivity(intent5);
                         break;
                     case R.id.logout:
+
                         break;
                     default:
                         break;

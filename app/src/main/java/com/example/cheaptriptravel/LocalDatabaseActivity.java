@@ -10,7 +10,6 @@ import android.widget.Toast;
 
 import org.litepal.crud.DataSupport;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -33,12 +32,9 @@ public class LocalDatabaseActivity extends AppCompatActivity {
                 //Connector.getDatabase();
                 Trips trips = new Trips();
                 trips.setName("CHAN TAI MAN");
-                trips.setAddress("OUHK");
-                trips.setLat(22.316279);
-                trips.setLon(114.180408);
+
                 trips.setOpentime("9:00");
-                trips.setContent("OUHK is a school");
-                trips.setPublishDate(new Date());
+
                 if (trips.save()) {//saveThrows
                     Toast.makeText(LocalDatabaseActivity.this, "存储成功", Toast.LENGTH_SHORT).show();
                 } else {
@@ -53,7 +49,6 @@ public class LocalDatabaseActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Trips trips = new Trips();
                 trips.setName("aaaaaaa");
-                trips.setAddress("KOWLOON");
                 //trips.setToDefault("name"); //all name =null
                 //trips.updateAll();          //update to all data
 
@@ -66,8 +61,8 @@ public class LocalDatabaseActivity extends AppCompatActivity {
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DataSupport.deleteAll(Trips.class, "name=?", "CHAN TAI MAN"); //delete data
-
+                // DataSupport.deleteAll(Trips.class, "name=?", "CHAN TAI MAN"); //delete data
+                DataSupport.deleteAll(Trips.class);
             }
         });
         find.setOnClickListener(new View.OnClickListener() {
@@ -83,8 +78,7 @@ public class LocalDatabaseActivity extends AppCompatActivity {
                 //           .limit(10).offset(1).find(Trips.class)
 
                 for (Trips trip:trips){
-                    Log.d("localdata", "name is "+ trip.getName());
-                    Log.d("localdata", "address is "+ trip.getAddress());
+                    Log.d("localdata", "name is "+ trip.getPlaces());
 
                 }
             }

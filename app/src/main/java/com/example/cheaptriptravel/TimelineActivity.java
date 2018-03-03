@@ -1,7 +1,6 @@
 package com.example.cheaptriptravel;
 
 import android.annotation.TargetApi;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +10,8 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.cheaptriptravel.TimelineAdapter.OnItemPressedListener;
+
+import org.litepal.crud.DataSupport;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -41,15 +42,21 @@ public class TimelineActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.timeline_layout);
-        Intent intent = getIntent();
+        //Intent intent = getIntent();
         //Location location = (Location)getIntent().getSerializableExtra("loc0");
-        String name = intent.getStringExtra("loc0");
-        events = intent.getStringArrayListExtra("loc2");
-        Log.d("TestMessage", name);
-        for (int n=0;n<events.size();n++) {
+        //String name = intent.getStringExtra("loc0");
+        //events = intent.getStringArrayListExtra("loc2");
+        //Log.d("TestMessage", name);
+        /*for (int n=0;n<events.size();n++) {
             Log.d("TestMessage", events.get(n));
-        }
+        }*/
+        List<Trips> trips = DataSupport.findAll(Trips.class);
+        for (Trips trip:trips){
+            Log.d("localPlace", "place is "+trip.getPlaces());
+            //Log.d("localId", String.valueOf(trip.getId()));
 
+            events.add(trip.getPlaces());
+        }
         findView();
         initData();
     }

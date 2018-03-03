@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <litepal>
     <dbname value = "bookstore"></dbname>
-    <version value= "3"></version>
+    <version value= "9"></version>
     <list>
         <mapping class="com.example.cheaptriptravel.Trips"></mapping>
-        <mapping class="com.example.cheaptriptravel.TripsComment"></mapping>
-        <mapping class="com.example.cheaptriptravel.TripsIntroduction"></mapping>
-        <mapping class="com.example.cheaptriptravel.TripsCategory"></mapping>
 
     </list>
 </litepal>
