@@ -103,9 +103,8 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".ShowtextActivity">
-
-        </activity>
+        <activity android:name=".ShowtextActivity"></activity>
+        <activity android:name=".Week_Display"></activity>
     </application>
 
 </manifest>

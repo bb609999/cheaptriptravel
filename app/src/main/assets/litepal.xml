@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <litepal>
-    <dbname value = "bookstore"></dbname>
-    <version value= "9"></version>
+    <dbname value = "Schedule"></dbname>
+    <version value= "1"></version>
     <list>
         <mapping class="com.example.cheaptriptravel.Trips"></mapping>
+        <mapping class="com.example.cheaptriptravel.Schedule"></mapping>
+
 
     </list>
 </litepal>

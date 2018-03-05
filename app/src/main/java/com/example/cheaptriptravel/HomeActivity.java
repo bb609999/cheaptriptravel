@@ -63,6 +63,10 @@ public class HomeActivity extends AppCompatActivity  {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         content = findViewById(R.id.content);
 
+
+
+
+
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -144,7 +148,7 @@ public class HomeActivity extends AppCompatActivity  {
                 break;
             case R.id.settings:
                 Toast.makeText(this, "You clicked Settings", Toast.LENGTH_SHORT).show();
-                Intent intent3 = new Intent(HomeActivity.this,LocationSearch.class);
+                Intent intent3 = new Intent(HomeActivity.this,Week_Display.class);
                 startActivity(intent3);
                 break;
 
